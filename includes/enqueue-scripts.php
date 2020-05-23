@@ -16,6 +16,8 @@ function delivery_date_system_enable_datepicker() {
 			// jQuery UI
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
+			wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css' );
+            wp_enqueue_style( 'jquery-ui' );
 			
 			// Delivery Date
 			wp_enqueue_script( 'delivery-date-system', plugins_url( '../assets/js/delivery.date.min.js', __FILE__ ), array( 'jquery-ui-datepicker', 'jquery-ui-draggable' ) );
