@@ -1,95 +1,112 @@
 <?php
 
-/**
- * Display the delivery date and period fields in checkout.
- *
- * @param [object] $checkout
- * @return void
- */
-function delivery_date_system_echo_fields( $checkout ) {
-	echo '<div class="delivery-options">';
-	
-	woocommerce_form_field( 'delivery_date', array(
-		'type'          => 'text',
-		'class'         => array('form-row-wide'),
-		'id'            => 'datepicker',
-		'required'      => true,
-		'label'         => __( 'Select one of the available delivery days', 'delivery-date-system' ),
-		'placeholder'   => __( 'Open calendar', 'delivery-date-system' ),
-		'autocomplete'  => 'off',
-	));
-	
-	if ( ! empty( delivery_time_options() ) ) {
-		woocommerce_form_field( 'delivery_time', array(
-			'type'          => 'select',
-			'class'         => array('form-row-wide'),
-			'id'            => 'delivery-time',
-			'required'      => true,
-			'label'         => __( 'Select a delivery time', 'delivery-date-system' ),
-			'options'     	=> delivery_time_options()
-		));
-	}
-		
-	echo '</div>';
+// Prevents direct access
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
-add_action( 'woocommerce_before_order_notes', 'delivery_date_system_echo_fields', 5 );
-	
-/**
- * Validates delivery date fields
- *
- * @return void
- */
-function delivery_date_system_validate_new_checkout_fields() {
-	if ( empty( $_POST['delivery_date'] ) ) wc_add_notice( __( 'Select an available delivery date.', 'delivery-date-system' ), 'error' );
-	if ( empty( $_POST['delivery_time'] ) ) wc_add_notice( __( 'Select an available delivery time.', 'delivery-date-system' ), 'error' );
-}
-add_action( 'woocommerce_checkout_process', 'delivery_date_system_validate_new_checkout_fields' );
 
 /**
- * Save delivery date and time in order meta.
+ * Return the delivery time options in an array
+ *
+ * @return array $options
+ */
+function delivery_time_options() {
+	$times = delivery_date_system_get_option( 'delivery_times', '' );
+	$options = array( '' => __( 'Selecciona una opción...', 'delivery-date-system' ) );
+
+	if ( ! empty( $times ) ) {
+		foreach( $times as $time ) {
+			$from = date('H:i', strtotime( $time['from'] ) );
+			$to = date('H:i', strtotime( $time['to'] ) );
+			$options[sanitize_title( $time['label'] )] = sprintf( __( 'de %1$s a %2$s', 'delivery-date-system' ), $from, $to );
+		}
+	}
+
+	return $options;
+}
+
+/**
+ * Return delivery time label to be displayed
  *
  * @param int $order_id
- * @return void
+ * @return string $period
  */
-function delivery_date_system_save_date_time_order( $order_id ) {
-    if ( $_POST['delivery_date'] ) update_post_meta( $order_id, '_delivery_date', sanitize_text_field( $_POST['delivery_date'] ) );
-	if ( $_POST['delivery_time'] ) update_post_meta( $order_id, '_delivery_time', sanitize_text_field( $_POST['delivery_time'] ) );
+function delivery_time_label( $order_id ) {
+	$period = get_post_meta( $order_id, '_delivery_time', true );
+	$periods = delivery_time_options();
+
+	if ( ! empty( $periods[ $period ] ) )
+		return $periods[ $period ];
+
+	return __( 'Hora de entrega no reconocida.', 'delivery-date-woocommerce' );
 }
-add_action( 'woocommerce_checkout_update_order_meta', 'delivery_date_system_save_date_time_order' );
 
 /**
- * Display delivery date and period in admin order view
+ * Return an array of month names
  *
- * @param [type] $order
- * @return void
+ * @param string $format The expected month format
+ * @return array $months
  */
-function delivery_date_system_display_admin_order_meta( $order ) {
-	echo '<p><strong>' . __( 'Delivery date:', 'delivery-date-system' ) . '</strong> ' . get_post_meta( $order->get_id(), '_delivery_date', true ) . '</p>';
-	echo '<p><strong>' . __( 'Delivery time:', 'delivery-date-system' ) . '</strong> ' . delivery_time_label( $order->get_id() ) . '</p>';
-}
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'delivery_date_system_display_admin_order_meta' );
+function delivery_date_system_month_names( $format = 'F' ) {
+	$months = array();
 
-/**
- * Display delivery date and time in order email
- *
- * @param [type] $order
- * @param [type] $sent_to_admin
- * @param [type] $plain_text
- * @param [type] $email
- * @return void
- */
-function delivery_date_system_order_email_info( $order, $sent_to_admin, $plain_text, $email ) {
-	$date = get_post_meta( $order->get_id(), '_delivery_date', true );
-    $time = delivery_time_label( $order->get_id() );
-
-    if ( $plain_text === false ) {
-		echo '<h2>' . __( 'Delivery', 'delivery-date-system' ) . '</h2>';
-        echo '<p>';
-        printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
-        echo '</p>';
-	} else {
-		echo __( 'Delivery', 'delivery-date-system' ) . '\n';
-		printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
+	for( $m = 1; $m <= 12; ++$m ){
+		$months[] = date_i18n( $format, mktime(0, 0, 0, $m, 1) );
 	}
+
+	return $months;
 }
-add_action( 'woocommerce_email_after_order_table', 'delivery_date_system_order_email_info', 10, 4 );
+
+/**
+ * Returns an array of day names
+ *
+ * @param string $format The expected day format
+ * @return void
+ */
+function delivery_date_system_day_names( $format = 'l' ) {
+	$timestamp = strtotime( 'next Sunday' );
+	$days = array();
+
+	for ($i = 0; $i < 7; $i++) {
+		$days[] = date_i18n( $format, $timestamp );
+		$timestamp = strtotime( '+1 day', $timestamp );
+	}
+
+	return $days;
+}
+
+/**
+ * Returns an array of first letter day names
+ *
+ * @return array $days
+ */
+function delivery_date_system_day_names_first_letter() {
+	$timestamp = strtotime( 'next Sunday' );
+	$days = array();
+
+	for ( $i = 0; $i < 7; $i++) {
+		$days[] = substr( date_i18n( 'l', $timestamp ), 0, 1 );
+		$timestamp = strtotime( '+1 day', $timestamp );
+	}
+
+	return $days;
+}
+
+/**
+ * Returns an array of timestamps as formatted dates
+ *
+ * @param [type] $dates
+ * @param string $format
+ * @return array $formatted
+ */
+function delivery_date_system_timestamp_to_datestring( $dates, $format = 'Y-m-d' ) {
+	$formatted = array();
+
+	if ( is_array( $dates ) ) {
+		foreach ( $dates as $date ) {
+			$formatted[] = date( $format, $date );
+		}
+	}
+
+	return $formatted;
+}
