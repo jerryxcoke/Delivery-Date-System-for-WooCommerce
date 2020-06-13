@@ -9,6 +9,8 @@
 *.vi
 *.ini
 *~
+*.phar
+*.bat
 
 # OS or Editor folders
 ._*
