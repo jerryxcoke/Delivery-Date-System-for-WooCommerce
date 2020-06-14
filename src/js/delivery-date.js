@@ -49,7 +49,6 @@ jQuery(document).ready(function($) {
     $( '#datepicker' ).change(function(){
         switch(jQuery("#datepicker").datepicker("getDate").getDay()) {
             case 5:
-                console.log(this);
                 time_input1.disabled = true;
                 time_input2.disabled = true;
                 time_input3.disabled = true;
