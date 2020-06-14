@@ -33,14 +33,14 @@ if ( typeof define === "function" && define.amd ) {
     return datepicker.regional[ delivery_data.locale ];
 } ) );
 
-var time_input, time_input1, time_input2, time_input3, time_input4, time_input5;
 
 jQuery(document).ready(function($) {
     // Days to be disabled as an array
     var disableddates = delivery_data.excludedDates || null; // yyyy-mm-dd
     var disableddates_m_d_Y = delivery_data.excludedDates_m_d_Y || null; //m-d-yyyy
 
-    time_input = jQuery('delivery-time')[0];
+    var time_input, time_input1, time_input2, time_input3, time_input4, time_input5;
+    time_input = $('#delivery-time')[0];
     time_input1 = time_input[1];
     time_input2 = time_input[2];
     time_input3 = time_input[3];
