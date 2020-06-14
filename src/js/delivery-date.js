@@ -39,17 +39,17 @@ jQuery(document).ready(function($) {
     var disableddates = delivery_data.excludedDates || null; // yyyy-mm-dd
     var disableddates_m_d_Y = delivery_data.excludedDates_m_d_Y || null; //m-d-yyyy
 
-    var time_input, time_input1, time_input2, time_input3, time_input4, time_input5;
-    time_input = $('#delivery-time')[0];
-    time_input1 = time_input[1];
-    time_input2 = time_input[2];
-    time_input3 = time_input[3];
-    time_input4 = time_input[4];
-    time_input5 = time_input[5];
+    var time_input = $('#delivery-time');
+    var time_input1 = time_input[0][1];
+    var time_input2 = time_input[0][2];
+    var time_input3 = time_input[0][3];
+    var time_input4 = time_input[0][4];
+    var time_input5 = time_input[0][5];
     
     $( '#datepicker' ).change(function(){
         switch(jQuery("#datepicker").datepicker("getDate").getDay()) {
             case 5:
+                console.log(this);
                 time_input1.disabled = true;
                 time_input2.disabled = true;
                 time_input3.disabled = true;
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
                 time_input5.disabled = true;
                 break;
         }
-    })
+    });
 
     /**
      * This function remove past dates from a given array.
