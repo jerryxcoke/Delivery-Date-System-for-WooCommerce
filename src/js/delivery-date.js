@@ -47,6 +47,31 @@ jQuery(document).ready(function($) {
     time_input4 = time_input[4];
     time_input5 = time_input[5];
     
+    $( '#datepicker' ).change(function(){
+        switch(jQuery("#datepicker").datepicker("getDate").getDay()) {
+            case 5:
+                time_input1.disabled = true;
+                time_input2.disabled = true;
+                time_input3.disabled = true;
+                time_input4.disabled = false;
+                time_input5.disabled = false;
+                break;
+            case 6:
+                time_input1.disabled = false;
+                time_input2.disabled = false;
+                time_input3.disabled = false;
+                time_input4.disabled = false;
+                time_input5.disabled = false;
+                break;
+            case 0:
+                time_input1.disabled = false;
+                time_input2.disabled = false;
+                time_input3.disabled = false;
+                time_input4.disabled = true;
+                time_input5.disabled = true;
+                break;
+        }
+    })
 
     /**
      * This function remove past dates from a given array.
@@ -181,29 +206,4 @@ jQuery(document).ready(function($) {
     $( '#datepicker' ).keypress(function openDatePicker() {
         return false
     });
-    $( '#datepicker' ).change(function(){
-        switch(jQuery("#datepicker").datepicker("getDate").getDay()) {
-            case 5:
-                time_input1.disabled = true;
-                time_input2.disabled = true;
-                time_input3.disabled = true;
-                time_input4.disabled = false;
-                time_input5.disabled = false;
-                break;
-            case 6:
-                time_input1.disabled = false;
-                time_input2.disabled = false;
-                time_input3.disabled = false;
-                time_input4.disabled = false;
-                time_input5.disabled = false;
-                break;
-            case 0:
-                time_input1.disabled = false;
-                time_input2.disabled = false;
-                time_input3.disabled = false;
-                time_input4.disabled = true;
-                time_input5.disabled = true;
-                break;
-        }
-    })
 });
