@@ -121,6 +121,21 @@ function delivery_date_system_register_options_metabox() {
         'id' => 'to',
         'type' => 'text_time'
     ) );
+
+    $cmb_options->add_group_field( $delivery_times, array(
+        'name' => __('Enable for these days', 'delivery-date-system'),
+        'id' => 'enabled_for',
+        'type' => 'multicheck',
+        'options' => array(
+            '0' => __( 'Sunday', 'delivery-date-system' ),
+            '1' => __( 'Monday', 'delivery-date-system' ),
+            '2' => __( 'Tuesday', 'delivery-date-system' ),
+            '3' => __( 'Wednesday', 'delivery-date-system' ),
+            '4' => __( 'Thursday', 'delivery-date-system' ),
+            '5' => __( 'Friday', 'delivery-date-system' ),
+            '6' => __( 'Saturday', 'delivery-date-system' )
+        ),
+    ));
 }
 add_action( 'cmb2_admin_init', 'delivery_date_system_register_options_metabox' );
 
