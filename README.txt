@@ -1,13 +1,5 @@
 === Delivery Date System for WooCommerce ===
-Contributors: hastedesign, allysonsouza, anyssa
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=allyson_as%40hotmail%2ecom&lc=US&item_name=WooCommerce%20Registrations%20by%20Haste&currency_code=BRL&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted
-Tags: woocommerce, delivery, orders, delivery date
-Requires at least: 4.6
-Tested up to: 5.1
-Stable tag: 1.0
-Requires PHP: 7.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+THIS IS A PERSONAL FORK TIED TO MY OWN INSTALLATION, DON'T USE.
 
 This plugin will add delivery date and periods fields to your checkout. Useful if you use your own delivery providers.
 
