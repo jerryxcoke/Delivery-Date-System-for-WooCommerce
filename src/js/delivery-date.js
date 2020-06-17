@@ -47,7 +47,8 @@ jQuery(document).ready(function($) {
     
     $( '#datepicker' ).change(function(){
         var today = new Date(Date.now());
-        switch(jQuery("#datepicker").datepicker("getDate").getDay()) {
+        var date = jQuery("#datepicker").datepicker("getDate");
+        switch(date.getDay()) {
             case 5:
                 time_input1.disabled = true;
                 time_input2.disabled = true;
@@ -67,20 +68,22 @@ jQuery(document).ready(function($) {
                 time_input4.disabled = true;
                 break;
         }
-        if(today.getHours() >= 22){
-            time_input1.disabled = true;
-            time_input2.disabled = true;
-            time_input3.disabled = true;
-            time_input4.disabled = true;
-        } else if(today.getHours() >= 21){
-            time_input1.disabled = true;
-            time_input2.disabled = true;
-            time_input3.disabled = true;
-        } else if(today.getHours() > 14 || (today.getHours() == 14 && today.getMinutes > 30)){
-            time_input1.disabled = true;
-            time_input2.disabled = true;
-        } else if(today.getHours() >= 14){
-            time_input1.disabled = true;
+        if(date.getDay() == today.getDay() && date.getMonth() == today.getMonth()){
+            if(today.getHours() >= 22){
+                time_input1.disabled = true;
+                time_input2.disabled = true;
+                time_input3.disabled = true;
+                time_input4.disabled = true;
+            } else if(today.getHours() >= 21){
+                time_input1.disabled = true;
+                time_input2.disabled = true;
+                time_input3.disabled = true;
+            } else if(today.getHours() > 14 || (today.getHours() == 14 && today.getMinutes > 30)){
+                time_input1.disabled = true;
+                time_input2.disabled = true;
+            } else if(today.getHours() >= 14){
+                time_input1.disabled = true;
+            }
         }
     });
 
