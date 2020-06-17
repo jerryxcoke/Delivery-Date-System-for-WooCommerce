@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
             case 5:
                 time_input1.disabled = true;
                 time_input2.disabled = true;
-                time_input3.disabled = true;
+                time_input3.disabled = false;
                 time_input4.disabled = false;
                 break;
             case 6:
@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
             case 0:
                 time_input1.disabled = false;
                 time_input2.disabled = false;
-                time_input3.disabled = false;
+                time_input3.disabled = true;
                 time_input4.disabled = true;
                 break;
         }
