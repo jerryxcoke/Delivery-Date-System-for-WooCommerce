@@ -29,6 +29,8 @@ Thumbs.db
 # Folders to ignore
 bower_components
 node_modules
+vendor
+assets
 .sass-cache
 
 # Ignore project files
