@@ -8,40 +8,40 @@
  */
 function delivery_date_system_echo_fields( $checkout ) {
 	echo '<div class="delivery-options">';
-
+	
 	woocommerce_form_field( 'delivery_date', array(
 		'type'          => 'text',
 		'class'         => array('form-row-wide'),
 		'id'            => 'datepicker',
 		'required'      => true,
-		'label'         => __( 'Selecciona una de las fechas disponibles', 'delivery-date-system' ),
-		'placeholder'   => __( 'Abrir calendario', 'delivery-date-system' ),
+		'label'         => __( 'Select one of the available delivery days', 'delivery-date-system' ),
+		'placeholder'   => __( 'Open calendar', 'delivery-date-system' ),
 		'autocomplete'  => 'off',
 	));
-
+	
 	if ( ! empty( delivery_time_options() ) ) {
 		woocommerce_form_field( 'delivery_time', array(
 			'type'          => 'select',
 			'class'         => array('form-row-wide'),
 			'id'            => 'delivery-time',
 			'required'      => true,
-			'label'         => __( 'Selecciona una hora de entrega', 'delivery-date-system' ),
+			'label'         => __( 'Select a delivery time', 'delivery-date-system' ),
 			'options'     	=> delivery_time_options()
 		));
 	}
-
+		
 	echo '</div>';
 }
 add_action( 'woocommerce_before_order_notes', 'delivery_date_system_echo_fields', 5 );
-
+	
 /**
  * Validates delivery date fields
  *
  * @return void
  */
 function delivery_date_system_validate_new_checkout_fields() {
-	if ( empty( $_POST['delivery_date'] ) ) wc_add_notice( __( 'Selecciona una de las fechas disponibles.', 'delivery-date-system' ), 'error' );
-	if ( empty( $_POST['delivery_time'] ) ) wc_add_notice( __( 'Selecciona una hora de entrega.', 'delivery-date-system' ), 'error' );
+	if ( empty( $_POST['delivery_date'] ) ) wc_add_notice( __( 'Select an available delivery date.', 'delivery-date-system' ), 'error' );
+	if ( empty( $_POST['delivery_time'] ) ) wc_add_notice( __( 'Select an available delivery time.', 'delivery-date-system' ), 'error' );
 }
 add_action( 'woocommerce_checkout_process', 'delivery_date_system_validate_new_checkout_fields' );
 
@@ -64,8 +64,8 @@ add_action( 'woocommerce_checkout_update_order_meta', 'delivery_date_system_save
  * @return void
  */
 function delivery_date_system_display_admin_order_meta( $order ) {
-	echo '<p><strong>' . __( 'Fecha de entrega:', 'delivery-date-system' ) . '</strong> ' . get_post_meta( $order->get_id(), '_delivery_date', true ) . '</p>';
-	echo '<p><strong>' . __( 'Hora de entrega:', 'delivery-date-system' ) . '</strong> ' . delivery_time_label( $order->get_id() ) . '</p>';
+	echo '<p><strong>' . __( 'Delivery date:', 'delivery-date-system' ) . '</strong> ' . get_post_meta( $order->get_id(), '_delivery_date', true ) . '</p>';
+	echo '<p><strong>' . __( 'Delivery time:', 'delivery-date-system' ) . '</strong> ' . delivery_time_label( $order->get_id() ) . '</p>';
 }
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'delivery_date_system_display_admin_order_meta' );
 
@@ -83,13 +83,13 @@ function delivery_date_system_order_email_info( $order, $sent_to_admin, $plain_t
     $time = delivery_time_label( $order->get_id() );
 
     if ( $plain_text === false ) {
-		echo '<h2>' . __( 'Entrega', 'delivery-date-system' ) . '</h2>';
+		echo '<h2>' . __( 'Delivery', 'delivery-date-system' ) . '</h2>';
         echo '<p>';
-        printf( esc_html__( 'Tu pedido será entregado el %1$s, a las %2$s.', 'delivery-date-system' ), $date, $time );
+        printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
         echo '</p>';
 	} else {
-		echo __( 'Entrega', 'delivery-date-system' ) . '\n';
-		printf( esc_html__( 'Tu pedido será entregado el %1$s, %2$s.', 'delivery-date-system' ), $date, $time );
+		echo __( 'Delivery', 'delivery-date-system' ) . '\n';
+		printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
 	}
 }
 add_action( 'woocommerce_email_after_order_table', 'delivery_date_system_order_email_info', 10, 4 );
