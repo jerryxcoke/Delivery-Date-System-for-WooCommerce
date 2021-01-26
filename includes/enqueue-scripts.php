@@ -35,10 +35,10 @@ function delivery_date_system_js_data() {
 	// jQuery UI Datepicker options
 	$data = array();
 	$data['locale'] = get_locale();
-	$data['closeText'] = __( 'Cerrar', 'delivery-date-system' );
-	$data['prevText'] = __( '&#x3C; Anterior', 'delivery-date-system' );
-	$data['nextText'] = __( 'Siguiente &#x3E;', 'delivery-date-system' );
-	$data['currentText'] = __( 'Hoy', 'delivery-date-system' );
+	$data['closeText'] = __( 'Close', 'delivery-date-system' );
+	$data['prevText'] = __( '&#x3C; Previous', 'delivery-date-system' );
+	$data['nextText'] = __( 'Next &#x3E;', 'delivery-date-system' );
+	$data['currentText'] = __( 'Today', 'delivery-date-system' );
 	$data['monthNames'] = delivery_date_system_month_names();
 	$data['monthNamesShort'] = delivery_date_system_month_names('M');
 	$data['dayNames'] = delivery_date_system_day_names();
@@ -48,7 +48,7 @@ function delivery_date_system_js_data() {
 	$data['dateFormat'] = 'dd/mm/yy';
 
 	$data['availableWeekdays'] = delivery_date_system_get_option( 'available_weekdays', [0,1,2,3,4,5,6] );
-
+	
 	$excludedDates = delivery_date_system_get_option( 'excluded_dates', '' );
 	$data['excludedDates'] = delivery_date_system_timestamp_to_datestring( $excludedDates );
 	$data['excludedDates_m_d_Y'] = delivery_date_system_timestamp_to_datestring( $excludedDates, 'n-j-Y' );

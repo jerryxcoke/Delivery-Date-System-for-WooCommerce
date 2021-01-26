@@ -12,13 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function delivery_time_options() {
 	$times = delivery_date_system_get_option( 'delivery_times', '' );
-	$options = array( '' => __( 'Selecciona una opción...', 'delivery-date-system' ) );
+	$options = array( '' => __( 'Select an option...', 'delivery-date-system' ) );
 
 	if ( ! empty( $times ) ) {
 		foreach( $times as $time ) {
 			$from = date('H:i', strtotime( $time['from'] ) );
 			$to = date('H:i', strtotime( $time['to'] ) );
-			$options[sanitize_title( $time['label'] )] = sprintf( __( 'de %1$s a %2$s', 'delivery-date-system' ), $from, $to );
+			$options[sanitize_title( $time['label'] )] = sprintf( __( '%1$s - From %2$s to %3$s', 'delivery-date-system' ), $time['label'], $from, $to );
 		}
 	}
 
@@ -38,7 +38,7 @@ function delivery_time_label( $order_id ) {
 	if ( ! empty( $periods[ $period ] ) )
 		return $periods[ $period ];
 
-	return __( 'Hora de entrega no reconocida.', 'delivery-date-woocommerce' );
+	return __( 'Unknown delivery time.', 'delivery-date-woocommerce' );
 }
 
 /**
@@ -59,14 +59,14 @@ function delivery_date_system_month_names( $format = 'F' ) {
 
 /**
  * Returns an array of day names
- *
+ * 
  * @param string $format The expected day format
  * @return void
  */
 function delivery_date_system_day_names( $format = 'l' ) {
 	$timestamp = strtotime( 'next Sunday' );
 	$days = array();
-
+	
 	for ($i = 0; $i < 7; $i++) {
 		$days[] = date_i18n( $format, $timestamp );
 		$timestamp = strtotime( '+1 day', $timestamp );
@@ -83,7 +83,7 @@ function delivery_date_system_day_names( $format = 'l' ) {
 function delivery_date_system_day_names_first_letter() {
 	$timestamp = strtotime( 'next Sunday' );
 	$days = array();
-
+	
 	for ( $i = 0; $i < 7; $i++) {
 		$days[] = substr( date_i18n( 'l', $timestamp ), 0, 1 );
 		$timestamp = strtotime( '+1 day', $timestamp );
@@ -101,7 +101,7 @@ function delivery_date_system_day_names_first_letter() {
  */
 function delivery_date_system_timestamp_to_datestring( $dates, $format = 'Y-m-d' ) {
 	$formatted = array();
-
+	
 	if ( is_array( $dates ) ) {
 		foreach ( $dates as $date ) {
 			$formatted[] = date( $format, $date );
