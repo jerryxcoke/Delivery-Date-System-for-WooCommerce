@@ -1,5 +1,6 @@
-/* Brazilian initialisation for the jQuery UI date picker plugin. */
+/* initialisation for the jQuery UI date picker plugin. */
 /* Written by Leonildo Costa Silva (leocsilva@gmail.com). */
+/* Updated by JerryXcoke */
 ( function( factory ) {
 if ( typeof define === "function" && define.amd ) {
     // AMD. Register as an anonymous module.
@@ -33,58 +34,15 @@ if ( typeof define === "function" && define.amd ) {
     return datepicker.regional[ delivery_data.locale ];
 } ) );
 
-
 jQuery(document).ready(function($) {
-    // Days to be disabled as an array
     var disableddates = delivery_data.excludedDates || null; // yyyy-mm-dd
     var disableddates_m_d_Y = delivery_data.excludedDates_m_d_Y || null; //m-d-yyyy
 
-    var time_input = $('#delivery-time');
-    var time_input1 = time_input[0][1];
-    var time_input2 = time_input[0][2];
-    var time_input3 = time_input[0][3];
-    var time_input4 = time_input[0][4];
+    const selectBox = $('#delivery-time');
     
     $( '#datepicker' ).change(function(){
-        var today = new Date(Date.now());
-        var date = jQuery("#datepicker").datepicker("getDate");
-        switch(date.getDay()) {
-            case 5:
-                time_input1.disabled = true;
-                time_input2.disabled = true;
-                time_input3.disabled = false;
-                time_input4.disabled = false;
-                break;
-            case 6:
-                time_input1.disabled = false;
-                time_input2.disabled = false;
-                time_input3.disabled = false;
-                time_input4.disabled = false;
-                break;
-            case 0:
-                time_input1.disabled = false;
-                time_input2.disabled = false;
-                time_input3.disabled = true;
-                time_input4.disabled = true;
-                break;
-        }
-        if(date.getDay() == today.getDay() && date.getMonth() == today.getMonth()){
-            if(today.getHours() >= 22){
-                time_input1.disabled = true;
-                time_input2.disabled = true;
-                time_input3.disabled = true;
-                time_input4.disabled = true;
-            } else if(today.getHours() >= 21){
-                time_input1.disabled = true;
-                time_input2.disabled = true;
-                time_input3.disabled = true;
-            } else if(today.getHours() > 14 || (today.getHours() == 14 && today.getMinutes > 30)){
-                time_input1.disabled = true;
-                time_input2.disabled = true;
-            } else if(today.getHours() >= 14){
-                time_input1.disabled = true;
-            }
-        }
+        resetSelectBox(selectBox);
+        delivery_data.delivery_times.map((deliveryTime, index) => setDeliveryTimeAvailability(deliveryTime.enabled_for, getOptionElementByIndex(selectBox, index)));
     });
 
     /**
@@ -220,4 +178,33 @@ jQuery(document).ready(function($) {
     $( '#datepicker' ).keypress(function openDatePicker() {
         return false
     });
+
+    /**
+     * 
+     * @param {Array} enabledDeliveryTimeList an array of strings which represent days when delivery enable  
+     * @param {jQuery} optionElement the element which can be set based on enabledDeliveryTimeList
+     */
+    const setDeliveryTimeAvailability = (enabledDeliveryTimeList, optionElement) => {
+        const date = jQuery("#datepicker").datepicker("getDate");
+        const isEnabled = enabledDeliveryTimeList.includes(date.getDay().toString());
+        
+        jQuery(optionElement).toggle(isEnabled);
+        optionElement.disabled = !isEnabled;
+    }
+
+
+    function resetSelectBox(selectBox) {
+        selectBox.prop('selectedIndex', 0);
+    }
+
+    /**
+     * @param {HTMLElement} selectElement 
+     * @param {int} index 
+     * @return {HTMLElement} shifted select's option
+     */
+    function getOptionElementByIndex(selectElement, index) {
+        return selectElement[0][index + 1];
+    }
+
 });
+

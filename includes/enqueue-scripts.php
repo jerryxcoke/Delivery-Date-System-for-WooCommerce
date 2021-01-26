@@ -20,7 +20,7 @@ function delivery_date_system_enable_datepicker() {
             wp_enqueue_style( 'jquery-ui' );
 			
 			// Delivery Date
-			wp_enqueue_script( 'delivery-date-system', plugins_url( '../assets/js/delivery.date.min.js', __FILE__ ), array( 'jquery-ui-datepicker', 'jquery-ui-draggable' ) );
+			wp_enqueue_script( 'delivery-date-system', plugins_url( '../src/js/delivery-date.js', __FILE__ ), array( 'jquery-ui-datepicker', 'jquery-ui-draggable' ) );
 		}
 	}
 }
@@ -45,7 +45,8 @@ function delivery_date_system_js_data() {
 	$data['dayNamesShort'] = delivery_date_system_day_names('D');
 	$data['dayhNamesMin'] = delivery_date_system_day_names_first_letter();
 	$data['weekHeader'] = 'Sm';
-	$data['dateFormat'] = 'dd/mm/yy';
+	$data['dateFormat'] = 'yy-mm-dd';
+	$data['delivery_times'] = delivery_date_system_get_option('delivery_times', 'semmi');
 
 	$data['availableWeekdays'] = delivery_date_system_get_option( 'available_weekdays', [0,1,2,3,4,5,6] );
 	
