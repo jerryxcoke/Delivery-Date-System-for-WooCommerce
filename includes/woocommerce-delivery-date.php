@@ -85,11 +85,11 @@ function delivery_date_system_order_email_info( $order, $sent_to_admin, $plain_t
     if ( $plain_text === false ) {
 		echo '<h2>' . __( 'Delivery', 'delivery-date-system' ) . '</h2>';
         echo '<p>';
-        printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
+        printf( esc_html__( 'You selected to deliver in %1$s, at %2$s. We try to our best', 'delivery-date-system' ), $date, $time );
         echo '</p>';
 	} else {
 		echo __( 'Delivery', 'delivery-date-system' ) . '\n';
-		printf( esc_html__( 'Your order will be delivered in %1$s, at %2$s.', 'delivery-date-system' ), $date, $time );
+		printf( esc_html__( 'You selected to deliver in %1$s, at %2$s. We try to our best', 'delivery-date-system' ), $date, $time );
 	}
 }
 add_action( 'woocommerce_email_after_order_table', 'delivery_date_system_order_email_info', 10, 4 );
